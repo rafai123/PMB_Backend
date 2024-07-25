@@ -1,73 +1,70 @@
 const express = require('express');
 const router = express.Router();
+const multer = require("multer")
+
+const storage = multer.memoryStorage()
+const upload = multer({storage})
+
 
 // import from utils
 const S3 = require("../utils/S3")
 const prisma = require("../utils/prisma");
 const Joi = require('joi');
 
-const registerSchema = Joi.object({
-    name: Joi.string().min(3).max(50).required(),
-    email: Joi.string().email().required(),
-    gender: Joi.string().valid('laki-laki', 'perempuan').required(),
-    password: Joi.string().min(8).required(),
-    // avatar: Joi.string().required(),
-})
+router.post("/", upload.fields([
+    {name: "ktp", maxCount: 1},
+    {name: "kartukeluarga", maxCount: 1},
+    {name: "ijazah", maxCount: 1},
+    {name: "sktl", maxCount: 1}
+    
+]), async (req, res) => {
+    
+    const { userId } = req.body
+    const files = req.files
+    
+    let receiptUrl
 
-router.post("/", async (req, res) => {
-    const { error } = registerSchema.validate(req.body)
-    if (error) {
-        return res.status(400).json({ message: error.details[0].message})
-    }
+    const uploadFileToS3 = async (file) =>{
+        // from hamster
+        const publicBucketUrl = "https://pub-83c13c4b6141426b8e4d3d54567ecbb9.r2.dev/";
+        let randomKey = Math.round(Math.random() * 9999999999);
+        let stringRandomKey = `${randomKey}-HamsterPedia.com`;
+        const fileUrl = `${publicBucketUrl}${stringRandomKey}`;
+        receiptUrl = fileUrl
 
-    const { name, email, gender, password } = req.body
-    const hashedpassword = await bcrypt.hash(password, 10)
-
-    let ava = "cowo"
-
-    if ( gender === "perempuan" ) {
-        ava = "cewe"
+        try {
+            await S3.upload({
+                Body: req.file.buffer,
+                Bucket: "fullstack-team",
+                Key: stringRandomKey,
+                ContentType: req.file.mimetype
+            }).promise()
+            return receiptUrl
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     try {
-        const user = await prisma.user.create({
+        const ktpUrl = await uploadFileToS3(files.ktp[0])
+        const kartukeluargaUrl = await uploadFileToS3(files.kartukeluarga[0])
+        const ijazahUrl = await uploadFileToS3(files.ijazah[0])
+        const sktlUrl = await uploadFileToS3(files.sktl[0])
+
+        const userDocuments = await prisma.document.create({
             data: {
-                name,
-                email,
-                gender,
-                password: hashedpassword,
-                avatar: ava
+                userId,
+                ktp: ktpUrl,
+                kartukeluarga: kartukeluargaUrl,
+                ijazahUrl: ijazahUrl,
+                sktl: sktlUrl
             }
         })
-        res.status(200).json({ message: "Success! User created", user })
+        res.status(200).json({message: "Success", userDocuments})
     } catch (e) {
-        res.status(400).json({ message: "Failed to create user", error: e.message })
+        console.log(e.message)
+        res.status(400).json({message: "failed", error: e.message})
     }
 })
-
-// router.post("/addcomment/:id", async (req, res) => {
-//     const { author, comment } = req.body
-//     const { id } = req.params
-
-//     try {
-//         const newComment = await prisma.comments.create({
-//             data: {
-//                 author,
-//                 comment,
-//                 post: {
-//                     connect: {
-//                         id: parseInt(id)
-//                     }
-//                 }
-//             }
-//         })
-
-//         console.log("Komentar berhasil ditambahkan : ", newComment)
-//         res.status(200).json({message: "Comment added", newComment})
-//     } catch (error) {
-//         console.log("error", error)
-//         res.status(400).json({message: error.message})
-//     }
-// })
 
 module.exports = router
