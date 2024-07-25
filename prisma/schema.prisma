@@ -12,22 +12,54 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Posts {
-  id            Int      @id @default(autoincrement())
-  author        String
-  title         String
-  description   String
-  image         String  
-  category      String @default("General")
-  createdAt DateTime @default(now())
-  comments     Comments[]
+model User {
+  id            Int   @id @default(autoincrement())
+  name          String
+  email         String  @unique
+  gender        String
+  password      String
+
+  biodata Biodata?
+  documents Document[]
 }
 
-model Comments {
-  id            Int      @id @default(autoincrement())
-  author        String
-  comment       String
-  createdAt DateTime @default(now())
-  postId        Int
-  post          Posts    @relation(fields: [postId], references: [id])
+model Biodata {
+  id                  Int     @id @default(autoincrement())
+  userId              Int     @unique
+  fullName            String
+  nisn                String
+  nik                 String
+  birthDate           DateTime
+  nationality         String
+  phoneNumber         String
+  address             String
+  fatherName          String
+  fatherNik           String
+  fatherBirthdate     DateTime
+  fatherOccupation     String
+  fatherEducation     String
+  fatherSalary        String
+  motherName          String
+  motherNik           String
+  motherBirthdate     DateTime
+  motherOccupation    String
+  motherEducation     String
+  motherSalary        String
+  schoolOrigin        String
+  departent           String
+  receipt             String //URL kwitansi
+
+  user    User        @relation(fields: [userId], references: [id])
+}
+
+model Document {
+  id          Int     @id @default(autoincrement())
+  userId      Int
+  ktp         String
+  kartukeluarga          String
+  ijazah        String
+  sktl         String //URL file
+  anotherfile   String
+
+  user    User    @relation(fields: [userId], references: [id])
 }

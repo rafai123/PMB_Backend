@@ -8,8 +8,10 @@ const app = express()
 const port = 3003
 
 // import routes
-const postsRouter = require("./routes/post")
-const commentRouter = require("./routes/comment")
+const loginRouter = require("./routes/login")
+const registerRouter = require("./routes/register")
+const biodataRouter = require("./routes/biodata")
+const documentRouter = require("./routes/document")
 
 // middleware
 app.use(cors())
@@ -17,12 +19,14 @@ dotenv.config()
 app.use(express.json())
 
 app.get("/", (req, res) => {
-    res.send("Backend for HamsterPedia is running!, \n for get all post : thislink/allposts \n to add comment addcomment/:idPost")
+    res.send("Backend for PMB is running!")
 })
 
 // routes
-app.use("/post", postsRouter)
-app.use("/comment", commentRouter)
+app.use("/login", loginRouter)
+app.use("/register", registerRouter)
+app.use("/biodata", biodataRouter)
+app.use("/document", documentRouter)
 
 app.listen(port, () => {
     console.log(`Server is lisening on port ${port}`)
