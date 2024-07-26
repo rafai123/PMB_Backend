@@ -7,7 +7,8 @@ const upload = multer({storage})
 
 // import from utils
 const S3 = require("../utils/S3")
-const prisma = require("../utils/prisma")
+const prisma = require("../utils/prisma");
+const Joi = require('joi');
 
 const loginSchema = Joi.object({    
     email: Joi.string().email().required(),
