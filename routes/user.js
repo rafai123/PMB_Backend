@@ -14,7 +14,7 @@ router.get("/getall", async (req, res) =>{
         const users = await prisma.user.findMany({
             include: {
                 biodata: true,
-                document: true,
+                documents: true,
             }
         })
 
