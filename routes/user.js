@@ -33,7 +33,7 @@ router.get("/:id", async (req, res) => {
             where: {id: parseInt(id) },
             include: {
                 biodata: true,
-                document: true,
+                documents: true,
             }
         })
 
