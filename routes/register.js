@@ -5,6 +5,7 @@ const router = express.Router();
 const S3 = require("../utils/S3")
 const prisma = require("../utils/prisma");
 const Joi = require('joi');
+const bcrypt = require("bcrypt")
 
 const registerSchema = Joi.object({
     name: Joi.string().min(3).max(50).required(),
@@ -21,6 +22,7 @@ router.post("/", async (req, res) => {
     }
 
     const { name, email, gender, password } = req.body
+    console.log(name, email)
     const hashedpassword = await bcrypt.hash(password, 10)
 
     let ava = "cowo"
@@ -41,6 +43,7 @@ router.post("/", async (req, res) => {
         })
         res.status(200).json({ message: "Success! User created", user })
     } catch (e) {
+        console.log(e.message)
         res.status(400).json({ message: "Failed to create user", error: e.message })
     }
 })

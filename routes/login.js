@@ -9,10 +9,11 @@ const upload = multer({storage})
 const S3 = require("../utils/S3")
 const prisma = require("../utils/prisma");
 const Joi = require('joi');
+const bcrypt = require("bcrypt")
 
 const loginSchema = Joi.object({    
     email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
+    password: Joi.string().min(3).required(),
 })
 
 router.post("/", async (req, res) =>{
@@ -22,9 +23,11 @@ router.post("/", async (req, res) =>{
         return res.status(400).json({error: error.details[0].message})
     }
 
+    console.log(req.body)
     const {email, password} = req.body
+    console.log(email, password)
 
-    const user = await prisma.user.findUnique({ where: { email } }) 
+    const user = await prisma.user.findUnique({ where: { email, } }) 
     
     if(!user || !(await bcrypt.compare(password, user.password))){
         return res.status(401).json({message: "Invalid email or password"})

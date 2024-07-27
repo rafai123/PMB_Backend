@@ -1,65 +1,59 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-  id            Int   @id @default(autoincrement())
-  name          String
-  email         String  @unique
-  gender        String
-  password      String
-
-  biodata Biodata?
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  gender    String
+  password  String
+  avatar    String     @default("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngegg.com%2Fen%2Fsearch%3Fq%3Davatars&psig=AOvVaw0mpOpnR_2QuVHb8OTGD2FS&ust=1722081603061000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCMDw_YTUxIcDFQAAAAAdAAAAABAE")
+  biodata   Biodata?
   documents Document[]
 }
 
 model Biodata {
-  id                  Int     @id @default(autoincrement())
-  userId              Int     @unique
-  fullName            String
-  nisn                String
-  nik                 String
-  birthDate           DateTime
-  nationality         String
-  phoneNumber         String
-  address             String
-  fatherName          String
-  fatherNik           String
-  fatherBirthdate     DateTime
-  fatherOccupation     String
-  fatherEducation     String
-  fatherSalary        String
-  motherName          String
-  motherNik           String
-  motherBirthdate     DateTime
-  motherOccupation    String
-  motherEducation     String
-  motherSalary        String
-  schoolOrigin        String
-  departent           String
-  receipt             String //URL kwitansi
-
-  user    User        @relation(fields: [userId], references: [id])
+  id               Int      @id @default(autoincrement())
+  userId           Int      @unique
+  fullName         String
+  nisn             String
+  nik              String
+  birthDate        DateTime
+  nationality      String
+  phoneNumber      String
+  address          String
+  fatherName       String
+  fatherNik        String
+  fatherBirthdate  DateTime
+  fatherOccupation String
+  fatherEducation  String
+  fatherSalary     String
+  motherName       String
+  motherNik        String
+  motherBirthdate  DateTime
+  motherOccupation String
+  motherEducation  String
+  motherSalary     String
+  schoolOrigin     String
+  departent        String
+  receipt          String
+  user             User     @relation(fields: [userId], references: [id])
 }
 
 model Document {
-  id          Int     @id @default(autoincrement())
-  userId      Int
-  ktp         String
-  kartukeluarga          String
-  ijazah        String
-  sktl         String //URL file
+  id            Int    @id @default(autoincrement())
+  userId        Int
   anotherfile   String
-
-  user    User    @relation(fields: [userId], references: [id])
+  ijazah        String
+  kartukeluarga String
+  ktp           String
+  sktl          String
+  user          User   @relation(fields: [userId], references: [id])
 }
