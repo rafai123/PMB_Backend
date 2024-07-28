@@ -11,17 +11,17 @@ const prisma = require("../utils/prisma");
 const Joi = require('joi');
 const bcrypt = require("bcryptjs")
 
-const loginSchema = Joi.object({    
-    email: Joi.string().email().required(),
-    password: Joi.string().min(3).required(),
-})
+// const loginSchema = Joi.object({    
+//     email: Joi.string().email().required(),
+//     password: Joi.string().min(3).required(),
+// })
 
 router.post("/", async (req, res) =>{
-    const { error } = loginSchema.validate(req.body)
+    // const { error } = loginSchema.validate(req.body)
 
-    if(error){
-        return res.status(400).json({error: error.details[0].message})
-    }
+    // if(error){
+    //     return res.status(400).json({error: error.details[0].message})
+    // }
 
     console.log(req.body)
     const {email, password} = req.body
