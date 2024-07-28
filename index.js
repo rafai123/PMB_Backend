@@ -13,6 +13,7 @@ const registerRouter = require("./routes/register")
 const biodataRouter = require("./routes/biodata")
 const documentRouter = require("./routes/document")
 const userRouter = require("./routes/user")
+const adminRouter = require("./routes/admin")
 
 // middleware
 app.use(cors())
@@ -29,6 +30,8 @@ app.use("/register", registerRouter)
 app.use("/biodata", biodataRouter)
 app.use("/document", documentRouter)
 app.use("/user", userRouter)
+app.use("/admin", adminRouter)
+
 
 app.listen(port, () => {
     console.log(`Server is lisening on port ${port}`)

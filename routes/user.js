@@ -48,5 +48,20 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+router.post("/delete/:id", async (req, res) => {
+    const { id } = req.params
+
+    try {
+        await prisma.user.delete({
+            where: {id: parseInt(id)},
+        })
+
+        res.status(200).json({message: "success"})
+    } catch (e) {
+        console.log(e.message)
+        res.status(400).json({message: e.message})
+    }
+})
+
 
 module.exports = router;

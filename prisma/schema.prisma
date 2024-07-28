@@ -63,3 +63,11 @@ model Document {
   sktl          String?
   user          User    @relation(fields: [userId], references: [id])
 }
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  avatar   String @default("https://pub-83c13c4b6141426b8e4d3d54567ecbb9.r2.dev/60443788106602")
+}
