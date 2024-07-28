@@ -25,10 +25,10 @@ router.post("/", async (req, res) => {
     console.log(name, email)
     const hashedpassword = await bcrypt.hash(password, 10)
 
-    let ava = "cowo"
+    let ava = "https://pub-83c13c4b6141426b8e4d3d54567ecbb9.r2.dev/60443788106602"
 
     if ( gender === "perempuan" ) {
-        ava = "cewe"
+        ava = "https://pub-83c13c4b6141426b8e4d3d54567ecbb9.r2.dev/6576422857671"
     }
 
     try {
