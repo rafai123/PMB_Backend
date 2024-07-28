@@ -5,7 +5,7 @@ const router = express.Router();
 const S3 = require("../utils/S3")
 const prisma = require("../utils/prisma");
 const Joi = require('joi');
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 
 const registerSchema = Joi.object({
     name: Joi.string().min(3).max(50).required(),

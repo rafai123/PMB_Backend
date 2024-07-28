@@ -9,7 +9,7 @@ const upload = multer({storage})
 const S3 = require("../utils/S3")
 const prisma = require("../utils/prisma");
 const Joi = require('joi');
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 
 const loginSchema = Joi.object({    
     email: Joi.string().email().required(),
