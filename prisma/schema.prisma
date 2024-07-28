@@ -9,51 +9,57 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  email     String     @unique
+  email     String    @unique
   gender    String
   password  String
-  avatar    String     @default("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngegg.com%2Fen%2Fsearch%3Fq%3Davatars&psig=AOvVaw0mpOpnR_2QuVHb8OTGD2FS&ust=1722081603061000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCMDw_YTUxIcDFQAAAAAdAAAAABAE")
+  avatar    String    @default("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngegg.com%2Fen%2Fsearch%3Fq%3Davatars&psig=AOvVaw0mpOpnR_2QuVHb8OTGD2FS&ust=1722081603061000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCMDw_YTUxIcDFQAAAAAdAAAAABAE")
   biodata   Biodata?
-  documents Document[]
+  documents Document?
 }
 
 model Biodata {
-  id               Int      @id @default(autoincrement())
-  userId           Int      @unique
-  fullName         String
-  nisn             String
-  nik              String
-  birthDate        DateTime
-  nationality      String
-  phoneNumber      String
-  address          String
-  fatherName       String
-  fatherNik        String
-  fatherBirthdate  DateTime
-  fatherOccupation String
-  fatherEducation  String
-  fatherSalary     String
-  motherName       String
-  motherNik        String
-  motherBirthdate  DateTime
-  motherOccupation String
-  motherEducation  String
-  motherSalary     String
-  schoolOrigin     String
-  departent        String
-  receipt          String
-  user             User     @relation(fields: [userId], references: [id])
+  id                  Int       @id @default(autoincrement())
+  userId              Int       @unique
+  fullName            String?
+  nisn                String?
+  nik                 String?
+  birthDate           DateTime?
+  nationality         String?
+  phoneNumber         String?
+  address             String?
+  fatherName          String?
+  fatherNik           String?
+  fatherBirthdate     DateTime?
+  fatherOccupation    String?
+  fatherEducation     String?
+  fatherSalary        String?
+  motherName          String?
+  motherNik           String?
+  motherBirthdate     DateTime?
+  motherOccupation    String?
+  motherEducation     String?
+  motherSalary        String?
+  schoolOrigin        String?
+  receipt             String?
+  department          String?
+  departmentTime      String?
+  schoolGraduateYear  String    @default("Unknown")
+  schoolOriginAddress String?
+  status              String?
+  birthPlace          String?
+  gender              String?
+  user                User      @relation(fields: [userId], references: [id])
 }
 
 model Document {
-  id            Int    @id @default(autoincrement())
-  userId        Int
-  anotherfile   String
-  ijazah        String
-  kartukeluarga String
-  ktp           String
-  sktl          String
-  user          User   @relation(fields: [userId], references: [id])
+  id            Int     @id @default(autoincrement())
+  userId        Int     @unique
+  anotherfile   String?
+  ijazah        String?
+  kartukeluarga String?
+  ktp           String?
+  sktl          String?
+  user          User    @relation(fields: [userId], references: [id])
 }
