@@ -21,6 +21,8 @@ router.post("/", upload.fields([
     
     const { userId } = req.body
     const files = req.files
+
+    const parsedUserId = parseInt(userId)
     
     let receiptUrl
 
@@ -51,15 +53,22 @@ router.post("/", upload.fields([
         const ijazahUrl = await uploadFileToS3(files.ijazah[0])
         const sktlUrl = await uploadFileToS3(files.sktl[0])
 
+        console.log("ktp:", files.ktp[0])
+        console.log(ktpUrl)
+        console.log(kartukeluargaUrl)
+        console.log(ijazahUrl)
+        console.log(sktlUrl)
+
         const userDocuments = await prisma.document.create({
             data: {
-                userId,
+                userId: parsedUserId,
                 ktp: ktpUrl,
                 kartukeluarga: kartukeluargaUrl,
-                ijazahUrl: ijazahUrl,
+                ijazah: ijazahUrl,
                 sktl: sktlUrl
             }
         })
+        console.log(userDocuments)
         res.status(200).json({message: "Success", userDocuments})
     } catch (e) {
         console.log(e.message)
