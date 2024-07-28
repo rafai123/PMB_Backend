@@ -36,10 +36,10 @@ router.post("/", upload.fields([
 
         try {
             await S3.upload({
-                Body: req.file.buffer,
+                Body: file.buffer,
                 Bucket: "fullstack-team",
                 Key: stringRandomKey,
-                ContentType: req.file.mimetype
+                ContentType: file.mimetype
             }).promise()
             return receiptUrl
         } catch (e) {
