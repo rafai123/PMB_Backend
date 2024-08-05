@@ -30,7 +30,7 @@ router.post("/", upload.fields([
         // from hamster
         const publicBucketUrl = "https://pub-83c13c4b6141426b8e4d3d54567ecbb9.r2.dev/";
         let randomKey = Math.round(Math.random() * 9999999999);
-        let stringRandomKey = `${randomKey}-HamsterPedia.com`;
+        let stringRandomKey = `${randomKey}-pmbstikom.com`;
         const fileUrl = `${publicBucketUrl}${stringRandomKey}`;
         receiptUrl = fileUrl
 
